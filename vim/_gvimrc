@@ -1,0 +1,139 @@
+"*************************************************
+"   Section:
+"		set script file character encoding.
+"   HelpReference:
+"*************************************************
+scriptencoding utf-8
+"*************************************************
+"   Section:
+"	GUI Options Settings.
+"   Description:
+"	GUI Options Settings.
+"   Usage:
+"      *add-option-flags* *remove-option-flags*
+"      *E539* *E550* *E551* *E552*
+"      値がフラグのリストからなるオプションもある。そういったオプションにフラグを追加
+"      したいとき、既存の値を変更したくないならば、こうすること。 >
+"	    :set guioptions+=a
+"      オプションからフラグを取り除くには、こうすること。 >
+"	    :set guioptions-=a
+"      これはオプション 'guioptions' からフラグ 'a' を取り除く。
+"      Note フラグは1個ずつ追加したり取り除いたりするよう注意。オプション
+"      'guioptions' が "ab" という値であるとき、"set guioptions-=ba" は機能しない。な
+"      ぜなら、"ba" という文字列は現れていないからである。
+"   HelpReference:
+"         'guioptions' 'go'	文字列	(既定では "egmrLtT"   (MS-Windows),
+"         					 "aegimrLtT" (GTK, MotifとAthena))
+"         			グローバル
+"         			{Vi にはない}
+"         			{VimのGUI版でのみ有効}
+"         	このオプションはVimのGUI版でのみ有効である。値は、GUIのどのコンポーネ
+"         	ントとオプションを使用するかを決定する、フラグの列である。
+"         	将来追加されるフラグによる問題を避けるため、コマンド ":set" では "+="
+"         	と "-=" を使うこと |add-option-flags|。
+"*************************************************
+"-------------------------------------------------------
+"   Purpose:
+"	Disable Tool bar
+"   HelpReference:
+"   *'go-T'*
+"   'T'	ツールバーを表示する。現在のところWin32, GTK+ と Motif,
+"	Photon, Athena GUIでのみ有効である。
+"-------------------------------------------------------
+set guioptions-=T
+
+"-------------------------------------------------------
+"   Purpose:
+"	color scheme set.
+"   HelpReference:
+"-------------------------------------------------------
+colorscheme pablo
+"-------------------------------------------------------
+"   Purpose:
+"	Disable Menu bar.
+"   HelpReference:
+"	*'go-m'*
+"	'm'	メニューバーを表示する。
+"-------------------------------------------------------
+set guioptions-=m
+
+"*************************************************
+"   Section:
+"	Window size settings.
+"   Purpose:
+"   Usage:
+"   HelpReference:
+"*************************************************
+"
+" ウインドウの幅
+set columns=120
+" ウインドウの高さ default lines=25
+set lines=70
+" コマンドラインの高さ(GUI使用時)
+set cmdheight=2
+" 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
+" colorscheme evening " (GUI使用時) it is default ?
+" colorscheme industry
+
+"*************************************************
+"   Section:
+"		Text Font settings.
+"   Purpose:
+"   Usage:
+"   HelpReference:
+"		Win32, GTK, Motif, Mac OS, Photon では:
+"		    :set guifont=*
+"		これはフォント選択ダイアログを開く。そこで望みのフォントを選択すること
+"		ができる。
+"
+"		Win32のGUIについて				*E244* *E245*
+"		- フォント名には以下のオプションを指定できる。
+"			hXX - 文字高が XX (単位はポイント。浮動小数点数でもよい)
+"			wXX - 文字幅が XX (単位はポイント。浮動小数点数でもよい)
+"			b   - ボールド (太字体)
+"			i   - イタリック (斜字体)
+"			u   - 下線付き
+"			s   - 打ち消し (文字を横切る線付き)
+"			cXX - 文字セットが XX。使用可能なものは以下の通り: ANSI,
+"			      ARABIC, BALTIC, CHINESEBIG5, DEFAULT, EASTEUROPE,
+"			      GB2312, GREEK, HANGEUL, HEBREW, JOHAB, MAC, OEM,
+"			      RUSSIAN, SHIFTJIS, SYMBOL, THAI, TURKISH,
+"			      VIETNAMESE ANSI, BALTIC
+"			      通常は "cDEFAULT" を使うとよいだろう。
+"	
+"		  オプションの区切りには ':' を使うこと。
+"		- 空白の代わりに '_' が使えるので、空白を '\' でエスケープする必要はな
+"		  い。
+"		- 例:
+"		    :set guifont=courier_new:h12:w5:b:cRUSSIAN
+"		    :set guifont=Andale_Mono:h7.5:w4.5
+"		|font-sizes| も参照。
+"*************************************************
+if has('win32')
+  " Windows用; default guifont=MS_Gothic:h12:cSHIFTJIS
+  set guifont=MS_Gothic:h10:cSHIFTJIS
+  "set guifont=MS_Mincho:h12:cSHIFTJIS
+  " 行間隔の設定
+  set linespace=1
+  " 一部のUCS文字の幅を自動計測して決める
+  if has('kaoriya')
+    set ambiwidth=auto
+  endif
+elseif has('mac')
+  set guifont=源ノ角ゴシック\ Code\ JP\ L:h12,Osaka－等幅:h14
+elseif has('xfontset')
+  " UNIX用 (xfontsetを使用)
+  set guifontset=a14,r14,k14
+endif
+
+
+"*************************************************
+"   Section:
+"	Formats
+"   Purpose:
+"	Formats
+"   Usage:
+"	Formats
+"   HelpReference:
+"	Formats
+"*************************************************

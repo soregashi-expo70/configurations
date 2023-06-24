@@ -1,0 +1,866 @@
+"*************************************************
+"   Section:
+"		set script file char code.
+"   HelpReference:
+"*************************************************
+scriptencoding utf-8
+set encoding=utf-8
+
+"*************************************************
+"   Section:
+"		various settings
+"   HelpReference:
+"*************************************************
+set showbreak=↪
+set clipboard=unnamed
+
+"*************************************************
+"   Section:
+"		Set color scheme.
+"   HelpReference:
+"*************************************************
+color desert
+
+"*************************************************
+"   Section:
+"		Load plugins.
+"   HelpReference:
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		2. Netrw の準備
+"   Usage:
+"   Default:
+"   HelpReference:
+"		*netrw-start*
+"		Netrw を使うとファイルの読み込み、書き込み、ネットワークを通したブラウジング、
+"		ローカルファイルのブラウジングが簡単になります。最初に、プラグインが有効になっ
+"		ているかどうかを確認してください。最低限、次のような設定が<.vimrc>に必要です:
+"		(なっていない場合は |netrw-activate| を参照してください) >
+"		set nocp                    " 'compatible' をオフにする
+"		filetype plugin on          " プラグインを有効にする
+"   Note:
+" ----------------------------------------------------
+set nocompatible
+filetype plugin on
+
+" ----------------------------------------------------
+"   Purpose:
+"		Defaultの表示Style.
+"   Usage:
+"		let g:netrw_liststyle={}
+"   Default:
+"   HelpReference:
+"		デフォルトの表示スタイルを変更できます。(|g:netrw_liststyle|) 参照。
+"		例えば、次の行を .vimrc に書くと: >
+"			let g:netrw_liststyle= 4
+"		ツリー形式の表示スタイルがデフォルトで使用されます。
+"   Note:
+"		 *g:netrw_liststyle*		デフォルトのファイル一覧表示スタイル:
+"		= 0: thin listing (一行に一つのファイル)
+"		= 1: long listing (一行に一つのファイル、タイムスタンプ、ファイルサイズ)
+"		= 2: wide listing (一行に複数のファイル)
+"		= 3: tree style listing (ツリー表示)
+" ----------------------------------------------------
+let g:netrw_liststyle=1
+
+" ----------------------------------------------------
+"   Purpose:
+"		matchit.vim
+"   Usage:
+"		Extend construal match pair.
+"		e.g. HTML tags.
+"   Default:
+"		NONE.
+"   HelpReference:
+"		In Practical vim, page 176.
+" 							*:ru* *:runtime*
+" :ru[ntime][!] {file} ..
+" 			'runtimepath' で示された各ディレクトリの{file}からExコ
+" 			マンドを読み込む。ファイルがなくてもエラーにはならな
+" 			い。例: >
+" 				:runtime syntax/c.vim
+"   Note:
+"		Problem when file type html, in java script code '{' and '}' pairs
+"		not jumping.
+"		For avoiding this problem, below code in.
+"
+"			:let b:match_debug=1.
+"
+"		refer this -> http://stackoverflow.com/questions/7566069/vim-brace-matching-unreliable
+" ----------------------------------------------------
+"runtime **/macros/matchit.vim
+"let b:match_debug=1 "dosent work in this scriptfile.
+
+
+"*************************************************
+"   Section:
+"		Displayed status settings.
+"   HelpReference:
+"	
+"*************************************************
+" 行番号を非表示 (number:表示)
+set number
+" ルーラーを表示 (noruler:非表示)
+set ruler
+" タブや改行を表示 (list:表示)
+set nolist
+" カーソル行の強調表示
+set cursorline
+
+"*************************************************
+"   Section:
+"		Search settings
+"   HelpReference:
+"	
+"*************************************************
+" enable highlight search
+set hlsearch
+" enable incremental search
+set incsearch
+" enable smart case
+set smartcase
+
+"*************************************************
+"   Section:
+"		Vim Tab Settings.
+"   HelpReference:
+"		 <Tab>に関する設定
+"		 Vimでは、タブの主な使い方には以下の4種類がある。
+"		 1. 'tabstop' を常に 8 に保ち、'softtabstop' と 'shiftwidth' を 4 (また
+"			は 3 等の好きな値) に設定し、'expandtab' をオフにする。するとVimは
+"			タブと空白の両方を使うが、<Tab> と <BS> を打ち込むと、タブが 4 (ま
+"			たは 3) 文字ごとに現れているかのように表示される。
+"		 2. 'tabstop' と 'shiftwidth' を好きなように設定し、'expandtab' をオン
+"			にする。この方法では常に空白が挿入される。'tabstop' が変更されても、
+"			整形されたテキストはめちゃめちゃにならない。
+"		 3. 'tabstop' と 'shiftwidth' を好きなように設定し、再びファイルを編集
+"			するときにはモードライン |modeline| でこれらを設定する。ファイルの
+"			編集にVimを使うときのみ有効。
+"		 4. 常に 'tabstop' と 'shiftwidth' を等しく設定し、'expandtab' をオフに
+"			する。すると (1回目のインデントのみだが) どのタブ幅でもうまく働く。
+"			こうするにしても、余白より後の最初の文字より後にタブ文字を挿入する
+"			ときは、空白文字として挿入されるようにするとよいだろう。そうしない
+"			と、'tabstop' が変更されたときに、整形されたコメントの形がおかしく
+"			なる。
+"		 {訳注: 'shiftwidth' は自動インデントやコマンド "<<", ">>" でずれる幅。
+"		 'softtabstop' は <Tab> や <BS> を打ち込んだときにカーソルが動く幅。
+"		 'tabstop' は画面上でタブ文字が占める幅の設定}
+"*************************************************
+let number_of_tab_width=4
+" ----------------------------------------------------
+"   Purpose:
+"      タブの画面上での幅
+"   Usage:
+"		set tabstop=8
+"   Default:
+"		8
+" ----------------------------------------------------
+" set tabstop=4
+let &tabstop=number_of_tab_width
+" ----------------------------------------------------
+"   Purpose:
+"	
+"   Usage:
+"		set smarttab	//enable
+"		set nosmarttab	//disable
+"   Default:
+"		nosmarttab
+"   HelpReference:
+"   Note:
+"		'smarttab'  'sta'     <Tab>入力時に 'shiftwidth' を使う
+"		オンのときは、行頭の余白内で <Tab> を打ち込むと、'shiftwidth' の数だけ 空白が挿入される。
+" ----------------------------------------------------
+ set smarttab
+
+" ----------------------------------------------------
+"   Purpose:
+"		仮想的なTab幅
+"   Usage:
+"   Default:
+"   HelpReference:
+"		'softtabstop' 'sts'	数値	(既定では 0)
+"				バッファについてローカル
+"				{Vi にはない}
+"		編集で <Tab> の幅として使用する空白の数。<Tab> を挿入したり <BS> を
+"		使ったときに適用される。普通に <Tab> を挿入するような使用感でありなが
+"		ら、実際にはスペース文字と <Tab> 文字が混ぜて使用される。これは 'ts'
+"		を標準値の 8 にしたままで、編集作業では <Tab> 幅として他の値を使いたい
+"		ときに便利である。その場合でも "x" 等のコマンドは実際の文字に対して動
+"		作する。
+"		'sts' がゼロならこの機能は無効になる。
+"		'sts' がマイナスなら 'shiftwidth' の値が使われる。
+"		このオプションは、'paste' がオンのときは 0 になる。
+"		|ins-expandtab| も参照。'expandtab' がオフのときは、<Tab> を打ち込むと
+"		空白の数が最小になる {訳注: できる限り空白をタブ文字で置き換える}。
+"		'cpoptions' にフラグ 'L' を含めると、'list' がオンのとき、タブの扱い方
+"		が変わる。
+"	NOTE:
+"		このオプションは、オプション 'compatible' がオンのときは 0 になるので注意。
+"   Note:
+" ----------------------------------------------------
+" set softtabstop=4
+let &softtabstop=number_of_tab_width
+
+" ----------------------------------------------------
+"   Purpose:
+"		インデントに使うシフト幅
+"   Usage:
+"   Default:
+"   HelpReference:
+"		'shiftwidth'	  'sw'      (自動的な)インデントに使うシフト幅
+"   Note:
+" ----------------------------------------------------
+" set shiftwidth=number_of_tab_width
+let &shiftwidth=number_of_tab_width
+
+" ----------------------------------------------------
+"   Purpose:
+"		タブに空白を挿入
+"   Usage:
+"   Default:
+"   HelpReference:
+"		'expandtab'	  'et'      <Tab>入力でスペースを入力する
+"   Note:
+" ----------------------------------------------------
+set expandtab
+
+"*************************************************
+"   Section:
+"		Key mapping in normal-mode.
+"   HelpReference:
+"		
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		Y を カーソル位置から行末までヤンクに変更.
+"		Defaultの動作は"yy"command.
+"   Usage:
+"   Default:
+"		Same as "yy" command.
+"   HelpReference:
+"   Note:
+" ----------------------------------------------------
+nnoremap Y y$
+
+" ----------------------------------------------------
+"   Purpose:
+"		Normal mode でも<Space>をInsetできる.
+"   Usage:
+"   Default:
+"   HelpReference:
+"   Note:
+" ----------------------------------------------------
+nnoremap <Space> i<Space><ESC>l
+
+" ----------------------------------------------------
+"   Purpose:
+"		New buffer をCurrent windowの下に表示する。
+"   Usage:
+"		<Ctrl-W>N
+"   Default:
+"   HelpReference:
+"   History:
+"		2014/07/31 [木] Add new.
+" ----------------------------------------------------
+nnoremap <C-W>N :below new<CR>
+
+" ----------------------------------------------------
+"   Purpose:
+"		Window Heightの 固定/無効 を切り替える
+"   Usage:
+"		<Ctrl-W>\
+"   Default:
+"   HelpReference:
+"   History:
+"		2014/07/31 [木] Add new.
+" ----------------------------------------------------
+function! ToggleFixingWindow()
+	if &winfixheight
+	"Fix状態だったら解除
+		set nowfh
+	else
+	"FixじゃなかったらFix
+		set wfh
+	endif
+	set wfh?
+endfunction
+nnoremap <silent> <C-W>\ :call ToggleFixingWindow()<CR>
+
+" ----------------------------------------------------
+"   Purpose:
+"		環境変数のListをReturnする。
+"   Usage:
+"		Insert to buffer.
+"			->(In insert mode)
+"   Default:
+"		None.
+"   HelpReference:
+"		http://stackoverflow.com/questions/11175842/how-to-list-all-the-environment-variables-in-vim
+"   History:
+"		2014/11/21 [金] 11:19:33 Added by Me.
+" ----------------------------------------------------
+function! Env()
+    redir => s
+    sil! exe "norm!:ec$\<c-a>'\<c-b>\<right>\<right>\<del>'\<cr>"
+    redir END
+    return split(s)
+endfunction
+
+" ----------------------------------------------------
+"   Purpose:
+"		Font size を変更するMap.
+"   Usage:
+"		<Ctrl-Up>   Font Size up   + 1.
+"		<Ctrl-Down> Font Size down - 1.
+"   Default:
+"   HelpReference:
+"		http://vim.wikia.com/wiki/Change_font_size_quickly
+"   History:
+"		2014/08/08 [金] Add new.
+" ----------------------------------------------------
+" Up Font size + 1
+nnoremap <C-Up> :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)+1)',
+ \ '')<CR>
+ \ :set guifont?<CR>
+
+" Down Font size - 1
+nnoremap <C-Down> :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)-1)',
+ \ '')<CR>
+ \ :set guifont?<CR>
+
+"*************************************************
+"   Section:
+"		Key mapping in insert-mode.
+"   HelpReference:
+"		[cmdline.txt]
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		Then press <F5> key, insert current date time .
+"   Usage:
+"		In insert mode, press <F5>.
+"		Insert string, "2014/05/13 [火]".
+"
+"		In insert mode, press <S-F5>.
+"		Insert string, "2014/05/13 [火] 02:40:20".
+"   Default:
+"   HelpReference:
+"		vim wiki
+"			http://vim.wikia.com/wiki/Insert_current_date_or_time#Automatically_update_timestamps
+"		vim	help
+"			:h strftime()
+"		strftime() Formats
+"			http://linuxjm.sourceforge.jp/html/LDP_man-pages/man3/strftime.3.html
+"			https://docs.ruby-lang.org/ja/latest/method/Time/i/strftime.html
+"	History:
+"		2014/05/13 [火] 02:36:15	Update,	Insert current date time.
+"		2014/05/16 [金] 23:01:30	Update,	<S-F5> types. 
+"   Note:
+" ----------------------------------------------------
+"inoremap <F5> <C-R>=strftime("%c")<CR>
+inoremap <F5> <C-R>=strftime("%Y-%m-%d")<CR>
+inoremap <C-F5> <C-R>=strftime("%Y-%m-%d(%a)")<CR>
+inoremap <S-F5> <C-R>=strftime("%Y-%m-%dT%H.%M.%S%z")<CR>
+inoremap <CS-F5> <C-R>=strftime("%Y-%m-%d(%a)T%H.%M.%S%z")<CR>
+
+nnoremap <F5> i<C-R>=strftime("%Y-%m-%d")<CR><ESC>
+nnoremap <C-F5> i<C-R>=strftime("%Y-%m-%d(%a)")<CR><ESC>
+nnoremap <S-F5> i<C-R>=strftime("%Y-%m-%dT%H.%M.%S%z")<CR><ESC>
+nnoremap <CS-F5> i<C-R>=strftime("%Y-%m-%d(%a)T%H.%M.%S%z")<CR><ESC>
+" ----------------------------------------------------
+"   Purpose:
+"		Then press <C-V> key, insert text from clipboard.
+"   Usage:
+"		In insert mode, press <C-v>.
+"   Default:
+"   HelpReference:
+"	History:
+"		2015/06/09 [火] 21:31:36 Create new.
+"   Note:
+" ----------------------------------------------------
+" ----------------------------------------------------
+"   Purpose:
+"		Then press <F5> key, insert current date time .
+"   Usage:
+"		In insert mode, press <F5>.
+"		Insert string, "2014/05/13 [火]".
+"
+"		In insert mode, press <S-F5>.
+"		Insert string, "2014/05/13 [火] 02:40:20".
+"   Default:
+"   HelpReference:
+"		vim wiki
+"			http://vim.wikia.com/wiki/Insert_current_date_or_time#Automatically_update_timestamps
+"		vim	help
+"			:h strftime()
+"		strftime() Formats
+"			http://linuxjm.sourceforge.jp/html/LDP_man-pages/man3/strftime.3.html
+"	History:
+"		2014/05/13 [火] 02:36:15	Update,	Insert current date time.
+"		2014/05/16 [金] 23:01:30	Update,	<S-F5> types. 
+"   Note:
+" ----------------------------------------------------
+inoremap <C-V> <C-R>*
+
+"*************************************************
+"   Section:
+"		Key mapping in commandline-mode.
+"   HelpReference:
+"		[cmdline.txt]
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		<C-p> key behavior conform key as <Up>
+"		<C-n> key behavior conform key as <Down>
+"   Usage:
+"   Default:
+"   HelpReference:
+"   Note:
+" ----------------------------------------------------
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+" ----------------------------------------------------
+"   Purpose:
+"		Insert current buffer's path when type %% keys.
+"   Usage:
+"		%% 
+"   Default:
+"		none.
+"   HelpReference:
+"   Note:
+" ----------------------------------------------------
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h') : '%%'
+
+" ----------------------------------------------------
+"   Purpose:
+"		Like tcsh behavior.
+"   Usage:
+"   Default:
+"   HelpReference:
+"		*tcsh-style*
+"   Note:
+" ----------------------------------------------------
+noremap! <C-A> <Home>
+noremap! <C-F> <Right>
+noremap! <C-B> <Left>
+noremap! <C-D> <Del>
+" cnoremap <Esc>b <S-Left>
+" cnoremap <Esc>f <S-Right>
+
+"*************************************************
+"   Section:
+"		Key mapping in visual-mode.
+"   HelpReference:
+"		[map.jax]
+"	History:
+"		2014/08/07 [木] Add Ctrl-c operation.
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		When type Ctrl-c in visual mode, yank to clipboard with selected texts.
+"		Like windows Ctrl-c operation.
+"   Usage:
+"		In visual mode, selecting text type Ctrl-c.
+"   Default:
+"   HelpReference:
+"   Note:
+" ----------------------------------------------------
+vnoremap <C-c> "*y
+
+
+" ----------------------------------------------------
+"   Purpose:
+"		Visual mode におけるヤンクコマンドを、
+"		無名レジスタへのコピーと、Clip boardへの
+"		コピーに変更する。
+"   Usage:
+"		In visual mode, type y key.
+"   Default:
+"		
+"   HelpReference:
+"   History:
+"		2015/05/23 [土] 00:08:08 Create new.
+" ----------------------------------------------------
+vnoremap y ygv"*y
+
+
+"*************************************************
+"   Section:
+"		Other settngs.
+"   HelpReference:
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		add braces '<' and '>' pair.
+"   Usage:
+"   Default:
+"   HelpReference:
+"   Note:
+" ----------------------------------------------------
+set matchpairs+=<:>
+
+" ----------------------------------------------------
+"   Purpose:
+"		Status line settings.
+"   Usage:
+"		%-0{minwid}.{maxwid}{item}
+"   Default:
+"		none.
+"   HelpReference:
+"		値は、普通のテキストに挟まれた関数 printf 形式の項目からなる。項目の形
+"		式は以下の通りである。
+"			%-0{minwid}.{maxwid}{item}
+"		{item} 以外の欄は指定しなくてもよい。パーセント記号そのものを表示する
+"		には "%%" とする。80個までの項目を指定できる。  *E541*
+"		http://sourceforge.jp/magazine/07/11/06/0151231
+"	History:
+"		2014/05/13 2:12:27	//Update.
+"   Note:
+"		%F	//File full path.
+"		%t	//File name (tail) of file in the buffer.
+"		%m	//Flag, for modifier.
+"		%r	//Flag, for read only.
+"		%H	//Flag, for help buffer.
+"			//Showing ",HLP".
+"		%W	//Flag,	for preview window.
+"			//Showing ",PRV".
+" ----------------------------------------------------
+" set statusline=%F%m%r%h%w%=Enc=%{&fenc},TYPE=%Y,ASCII=%02.2B,POS=%v,%l-%L,[%p%%]
+" 2014/11/19 [水] 07:24:42 以下の1行をModified.CWDの表示が長いので.
+" set statusline=%<%t%m%r%h%w%=[%{getcwd()}]Enc=%{&fenc},TYPE=%Y,[col:%03v,line:%3l][%3p%%-%L]
+set statusline=%t%<%m%r%h%w%=Enc=%{&fenc},Typ=%Y[col:%03v,line:%3l,%3p%%-%L]
+" 2022/11/18 [金] ステータスラインは常に表示
+" default 1
+set laststatus=2
+" ----------------------------------------------------
+"   Purpose:
+"		Command history size up to 100.
+"   Usage:
+"		set history=100.
+"   Default:
+"		20
+"   HelpReference:
+"		*cmdline-history* *history*
+" ----------------------------------------------------
+set history=100
+
+" ----------------------------------------------------
+"   Purpose:
+"		Stop create undo file.
+"   Usage:
+"		set noundofile
+"   Default:
+"		set undofile
+"   HelpReference:
+"		http://www.kaoriya.net/blog/2014/03/30/
+"   Note:
+" ----------------------------------------------------
+set noundofile
+
+" ----------------------------------------------------
+"   Purpose:
+"		Stop word wrap.
+"   Usage:
+"		set formatoptions-=t
+"   Default:
+"		tcq.
+"   HelpReference:
+"		'fo-table'
+"   Note:
+" ----------------------------------------------------
+set formatoptions-=t
+
+" ----------------------------------------------------
+"   Purpose:
+"		Set using shell to tcsh in Cygwin.
+"   Usage:
+"   Default:
+"   HelpReference:
+"		http://vim.wikia.com/wiki/Use_cygwin_shell
+"   Note:
+" ----------------------------------------------------
+"set shell=C:/APP/Cygwin64/bin/tcsh
+"set shellcmdflag=--login\ -c
+"set shellxquote=\"
+"
+" ----------------------------------------------------
+"   Purpose:
+"		Increasing and decreasing alphabetically.
+"   HelpReference:
+"		http://vim.wikia.com/wiki/Increasing_or_decreasing_numbers
+"   Note:
+" ----------------------------------------------------
+set nrformats+=alpha
+
+"_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+"	各種プラグイン用の設定
+
+"_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+"*************************************************
+"   Section:
+"		Nugget plugin section.
+"   HelpReference:
+"		none.
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		Search for selected text, forwards or backwards.
+"   Usage:
+"		v_* //Search to forwards.
+"		v_# //Search to backwards.
+"   Default:
+"   HelpReference:
+"		http://vim.wikia.com/wiki/Search_for_visually_selected_text
+"   Note:
+" ----------------------------------------------------
+"vnoremap <silent> * :<C-U>
+vnoremap * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
+vnoremap <silent> # :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy?<C-R><C-R>=substitute(
+  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
+" ----------------------------------------------------
+"   Purpose:
+"		使用するタブ幅を、拡張子毎に切り替える
+"   HelpReference:
+"		http://qiita.com/mitsuru793/items/2d464f30bd091f5d0fef
+"   Note:
+"       拡張子毎に設定したいことが増えてきたら、ファイルを分けようと思う
+" ----------------------------------------------------
+augroup fileTypeIndent
+    autocmd!
+    autocmd BufNewFile,BufRead *.md setlocal tabstop=2 softtabstop=2 shiftwidth=2
+augroup END
+
+"*************************************************
+"   Section:
+"		Conque settings.
+"   HelpReference:
+"		https://code.google.com/p/conque/wiki/Usage#2.1_General_Usage
+"	History:
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		Using Python version selection.
+"   Usage:
+"		g:ConqueTerm_PyVersion = 2	//Using version 2.
+"		g:ConqueTerm_PyVersion = 3	//Using version 3.
+"   Default:
+"   HelpReference:
+"		https://code.google.com/p/conque/wiki/Usage#3.1_General
+"	History:
+"   Note:
+" ----------------------------------------------------
+let g:ConqueTerm_PyVersion=3
+
+" ----------------------------------------------------
+"   Purpose:
+"		Using Python version selection.
+"   Usage:
+"		g:ConqueTerm_PyVersion = 2	//Using version 2.
+"		g:ConqueTerm_PyVersion = 3	//Using version 3.
+"   Default:
+"   HelpReference:
+"		https://code.google.com/p/conque/wiki/Usage#3.1_General
+"	History:
+"   Note:
+" ----------------------------------------------------
+nnoremap <C-@> :ConqueTermSplit 
+
+"*************************************************
+"   Section:
+"		dein導入
+"   HelpReference:
+"       https://github.com/Shougo/dein.vim
+"       http://qiita.com/yoza/items/2f8bd33a18225754f346
+"       http://qiita.com/delphinus/items/00ff2c0ba972c6e41542
+"	History:
+"*************************************************
+" プラグインが実際にインストールされるディレクトリ
+let s:dein_dir = expand('~/.vim/dein')
+" dein.vim 本体
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+" dein.vim がなければ github から落としてくる
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
+
+"dein Scripts-----------------------------
+if &compatible
+  set nocompatible               " Be iMproved
+endif
+
+" Required:
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+
+" Required:
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  " Let dein manage dein
+  " Required:
+  call dein#add(s:dein_repo_dir)
+
+  " Add or remove your plugins here:
+  "call dein#add('Shougo/neosnippet.vim')
+  "call dein#add('Shougo/neosnippet-snippets')
+
+  call dein#add('kannokanno/previm')
+
+  " You can specify revision/branch/tag.
+  "call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+
+  " Required:
+  call dein#end()
+  call dein#save_state()
+endif
+
+" Required:
+filetype plugin indent on
+syntax enable
+
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
+
+"End dein Scripts-------------------------
+
+"*************************************************
+"   Section:
+"		markdown形式のプレビューをするプラグインを設定
+"   HelpReference:
+"		http://qiita.com/uedatakeshi/items/31761b87ba8ecbaf2c1e
+"	History:
+"*************************************************
+" Markdownプレビューを実施するブラウザを指定
+" OSの判定についての参考
+" http://d.hatena.ne.jp/kminoru/20070613 
+" https://vi.stackexchange.com/questions/2572/detect-os-in-vimscript
+" working環境ならchromeを使う
+if has('win32unix')
+    let g:previm_open_cmd = 'chrome'
+elseif has('macunix')
+    let g:previm_open_cmd = 'open -a "Google Chrome"'
+endif
+
+
+
+"_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+"Formats.
+"_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+"*************************************************
+"   Section:
+"		SectionFormats
+"   HelpReference:
+"		Formats
+"	History:
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		Settings description.
+"   Usage:
+"   Default:
+"   HelpReference:
+"	History:
+"   Note:
+" ----------------------------------------------------
+"*************************************************
+"   Section:
+"		My resarch memo.
+"*************************************************
+" ----------------------------------------------------
+"   Purpose:
+"		How to use variables in vimrc.
+"   Usage:
+"		let &{optoin name}={variable}
+"	Example:
+"		let tab_width_num=4
+"		let &tabstop=tab_width_num
+"		let &shiftwidth=tab_width_num
+"   Reference:
+"		http://stackoverflow.com/questions/2284556/how-do-i-use-variables-in-my-vimrc
+"		http://stackoverflow.com/questions/5736580/setting-vim-options-with-variables
+"   Note:
+" ----------------------------------------------------
+"------------------------------------------------------------------------------------------
+"	実験 Code Section.
+"	VimのScriptに関する実験的なCodeを書くところ。
+"	のちに参照できるように、実験CodeはCommentOutして残すことにする。
+"	実験コードを書く際の必須Comment項目は、以下の点を守ること。
+"	1)When(日付)
+"		->いつ書いたかは重要。
+"	2)What
+"		->何を書いたか。
+"	3)Why
+"		->なぜ書いたか。
+"		  Helpにあった関数の使い方が知りたかったから、とか。
+"		  選択行を成型するPluginを書くときのxxxの処理を実現するCodeの調査、とか。
+"	4)Where(参考にした場所)
+"		->Web:URL、本:書籍名、Page数、行数
+"	5)Usage(使い方)
+"------------------------------------------------------------------------------------------
+"----------
+"Date:
+"	2015/01/11 [日] 22:14:17
+"What:
+"	map における<silent>の意味を知るため。
+"Why:
+"	選択Stringを検索するコマンド(visual *:自作)のCodeを理解するための一環。
+"Where:
+"	helpの*:map-<silent>* *:map-silent*
+"Usage:
+"	Case1(with<silent>)とCase2(without<silent>)での動きの違いをみて、<silent>を理解する。
+"----------
+"	Case1. <silent>ナシ
+"	コマンドLineに(/Header)が表示される。
+:map ,h /Header<CR>
+"	Case2. <silent>アリ
+"	コマンドLineに(/Header)が表示されない。
+":map <silent> ,h /Header<CR>
+"----------
+"When:
+"	2015/01/11 [日] 23:59:25
+"What:
+"	Clear all Registers.
+"Why:
+"	gV の役割を確認するために、一度すべてのRegisterをClearしたい。
+"	また、Vim Script内での \ Symbol の役割を確認したい。(予想は改行を無視し、すべてを1行で書かれているものとしたいのだろう)
+"Where:
+"	http://vim.1045645.n5.nabble.com/how-to-clear-registers-td1143529.html
+"Answer:
+"	Vim script内での \ Symbolは予想通り、改行無視だった。
+"	下記Codeで、\ 有りで実行したCaseと、\ 無しで実行したCaseでは、
+"	\ 無しの場合実行時Errorとなった。
+"----------
+function! ClearAllRegsters()
+let i=0| while (i<26) | exec 'let 
+			\@'.nr2char(i+(char2nr("a"))).'=""' | let i=i+1 | endwhile 
+endfunction
+""--------------------------------------------------
+"call plug#begin('~/.vim/plugged')
+"Plug 'brglng/vim-im-select'
+"call plug#end()
+""--------------------------------------------------
+""--------------------------------------------------
+"" vim-im-select settings:
+"let g:im_select_default = 'com.google.inputmethod.Japanese.Roman'
+""--------------------------------------------------
