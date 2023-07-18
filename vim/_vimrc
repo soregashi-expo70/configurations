@@ -645,6 +645,8 @@ vnoremap <silent> # :<C-U>
 augroup fileTypeIndent
     autocmd!
     autocmd BufNewFile,BufRead *.md setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.mmd setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.puml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
 "*************************************************
