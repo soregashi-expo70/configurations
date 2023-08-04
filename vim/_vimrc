@@ -649,122 +649,6 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.puml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
-"*************************************************
-"   Section:
-"		Conque settings.
-"   HelpReference:
-"		https://code.google.com/p/conque/wiki/Usage#2.1_General_Usage
-"	History:
-"*************************************************
-" ----------------------------------------------------
-"   Purpose:
-"		Using Python version selection.
-"   Usage:
-"		g:ConqueTerm_PyVersion = 2	//Using version 2.
-"		g:ConqueTerm_PyVersion = 3	//Using version 3.
-"   Default:
-"   HelpReference:
-"		https://code.google.com/p/conque/wiki/Usage#3.1_General
-"	History:
-"   Note:
-" ----------------------------------------------------
-let g:ConqueTerm_PyVersion=3
-
-" ----------------------------------------------------
-"   Purpose:
-"		Using Python version selection.
-"   Usage:
-"		g:ConqueTerm_PyVersion = 2	//Using version 2.
-"		g:ConqueTerm_PyVersion = 3	//Using version 3.
-"   Default:
-"   HelpReference:
-"		https://code.google.com/p/conque/wiki/Usage#3.1_General
-"	History:
-"   Note:
-" ----------------------------------------------------
-nnoremap <C-@> :ConqueTermSplit 
-
-"*************************************************
-"   Section:
-"		dein導入
-"   HelpReference:
-"       https://github.com/Shougo/dein.vim
-"       http://qiita.com/yoza/items/2f8bd33a18225754f346
-"       http://qiita.com/delphinus/items/00ff2c0ba972c6e41542
-"	History:
-"*************************************************
-" プラグインが実際にインストールされるディレクトリ
-let s:dein_dir = expand('~/.vim/dein')
-" dein.vim 本体
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-" dein.vim がなければ github から落としてくる
-if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-endif
-
-"dein Scripts-----------------------------
-if &compatible
-  set nocompatible               " Be iMproved
-endif
-
-" Required:
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-
-" Required:
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
-
-  " Let dein manage dein
-  " Required:
-  call dein#add(s:dein_repo_dir)
-
-  " Add or remove your plugins here:
-  "call dein#add('Shougo/neosnippet.vim')
-  "call dein#add('Shougo/neosnippet-snippets')
-
-  call dein#add('kannokanno/previm')
-
-  " You can specify revision/branch/tag.
-  "call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-
-  " Required:
-  call dein#end()
-  call dein#save_state()
-endif
-
-" Required:
-filetype plugin indent on
-syntax enable
-
-" If you want to install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
-
-"End dein Scripts-------------------------
-
-"*************************************************
-"   Section:
-"		markdown形式のプレビューをするプラグインを設定
-"   HelpReference:
-"		http://qiita.com/uedatakeshi/items/31761b87ba8ecbaf2c1e
-"	History:
-"*************************************************
-" Markdownプレビューを実施するブラウザを指定
-" OSの判定についての参考
-" http://d.hatena.ne.jp/kminoru/20070613 
-" https://vi.stackexchange.com/questions/2572/detect-os-in-vimscript
-" working環境ならchromeを使う
-if has('win32unix')
-    let g:previm_open_cmd = 'chrome'
-elseif has('macunix')
-    let g:previm_open_cmd = 'open -a "Google Chrome"'
-endif
-
-
 
 "_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 "Formats.
@@ -857,11 +741,12 @@ function! ClearAllRegsters()
 let i=0| while (i<26) | exec 'let 
 			\@'.nr2char(i+(char2nr("a"))).'=""' | let i=i+1 | endwhile 
 endfunction
-""--------------------------------------------------
-"call plug#begin('~/.vim/plugged')
-"Plug 'brglng/vim-im-select'
-"call plug#end()
-""--------------------------------------------------
+"--------------------------------------------------
+" vim-plug section.
+call plug#begin()
+Plug 'sheerun/vim-polyglot' "https://github.com/sheerun/vim-polyglot
+call plug#end()
+"--------------------------------------------------
 ""--------------------------------------------------
 "" vim-im-select settings:
 "let g:im_select_default = 'com.google.inputmethod.Japanese.Roman'

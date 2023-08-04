@@ -4,8 +4,8 @@ $GitPromptSettings.DefaultPromptSuffix = $('`n> ' * ($nestedPromptLevel + 1))
 function prompt {
     # Detect current platform powershell running on and user role, because of show these.
     $currentPlatformRunningOn = '';
-    $currentUserRole = '';
-    if ($PSVersionTable.Platform = 'UNIX') {
+    $currentUserRole = '[]';
+    if ($PSVersionTable.Platform -eq 'UNIX') {
         $currentPlatformRunningOn = '[UNIX]';
     } else {
         $currentPlatformRunningOn = '[WIN]';
@@ -14,7 +14,9 @@ function prompt {
         $principal = [Security.Principal.WindowsPrincipal] $identity
         $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
 
-        $currentUserRole = if($principal.Equals($adminRole)) { '[ADMIN]' } else { '[]' }
+        if($principal.IsInRole($adminRole)) {
+            $currentUserRole = '[ADMIN]'
+        }
     }
 
     # Your non-prompt logic here
