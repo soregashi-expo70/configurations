@@ -13,6 +13,7 @@ set encoding=utf-8
 "*************************************************
 set showbreak=↪
 set clipboard=unnamed
+set showcmd
 
 "*************************************************
 "   Section:
