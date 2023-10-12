@@ -28,13 +28,28 @@ function prompt {
 }
 
 
+# DateTime wise shortcuts.
 function Get-DateISO8601ForFilename {
     (Get-Date -f yyyy-MM-ddTHH.mm.ss%K) -replace ':',''
 }
+
 function Get-DateYMD {
     Get-Date -f yyyy-MM-dd
 }
 
+function Get-HoursMinutesSeconds {
+    Get-Date -f "HH:mm:ss.fff%K"
+}
 
 Set-Alias datef -Value Get-DateISO8601ForFilename
 Set-Alias dateymd -Value Get-DateYMD
+Set-Alias time -Value Get-HoursMinutesSeconds
+
+# https://learn.microsoft.com/en-us/dotnet/core/tools/enable-tab-autocomplete#powershell
+# PowerShell parameter completion shim for the dotnet CLI
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+     param($commandName, $wordToComplete, $cursorPosition)
+         dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+         }
+ }
